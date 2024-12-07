@@ -1,51 +1,24 @@
 #include "day1.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-int countLinesInFile(FILE *fp) {
-    int count = 0;
-
-    for (char c = getc(fp); c != EOF; c = getc(fp))
-        if (c == '\n')
-            count = count + 1;
-
-    return count;
-}
-
-int sortNumbers(int count) {
-    int array[count], index, i, j, min, temp;
-
-    for (i = 0; i < count - 1; i++) {
-        min = array[i];
-        for (j = i + 1; j < count; j++)
-            if (array[j] < min) {
-                min = array[j];
-                index = j;
-            }
-
-        temp = array[i];
-        array[i] = min;
-        array[index] = temp;
-    }
-
-    return array[count];
-}
-
-int main(void) {
-    FILE *fp = fopen("day1.test", "r");
+int main(void)
+{
+    FILE* fp = fopen("day1.test", "r");
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
 
     if (fp == NULL)
         exit(EXIT_FAILURE);
 
-    int count = countLinesInFile(fp);
-    int array[count];
-    array = sortNumbers(count);
+    while ((read = getline(&line, &len, fp)) != -1) {
+        printf("%s", line);
+    }
 
     fclose(fp);
-
-    for (int i = 0; i < count; i++)
-        printf("%d\n", array[i]);
-
-    printf("%d\n", count);
+    if (line)
+        free(line);
 
     return 11;
 }
